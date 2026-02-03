@@ -48,12 +48,19 @@ func main() {
 	// declare variable and take in user input
 	fmt.Println("Give me a number: ")
 	var number int
-	fmt.Scanf("%d", &number)
-	fmt.Println("Number: ", number)
+	amount, err := fmt.Scanf("%d", &number)
 
-	fmt.Println("==========")
-	// use user input to change value in struct
-	something.changeValue(number)
-	fmt.Println(something)
+	if err == nil {
+
+		// use user input to change value in struct
+		something.changeValue(number)
+		fmt.Println("Number: ", number, " read ", amount, "something: ", something)
+
+	} else {
+		fmt.Println("Error!: ", err)
+
+		fmt.Println("==========")
+
+	}
 
 }
