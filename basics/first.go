@@ -2,6 +2,14 @@ package main
 
 import "fmt"
 
+// BASIC COMMANDS:
+// go build first.go
+// ./first.exe
+
+// go mod init testMod
+
+// go run first.go
+
 // struct == tietue
 type Knowledge struct {
 	value      int
@@ -22,11 +30,30 @@ func main() {
 	// use struct
 	something := Knowledge{value: 5, identifier: "important"}
 
+	fmt.Println("==========")
+
+	// print info and something variables
 	fmt.Printf("info: %v\n", info)
 	fmt.Printf("something: %v\n", something)
 
+	// use function to change struct attributes
 	something.changeValue(200)
 
+	fmt.Println("==========")
+
+	// print again to see changed values
 	fmt.Println("something: ", something)
+
+	fmt.Println("==========")
+	// declare variable and take in user input
+	fmt.Println("Give me a number: ")
+	var number int
+	fmt.Scanf("%d", &number)
+	fmt.Println("Number: ", number)
+
+	fmt.Println("==========")
+	// use user input to change value in struct
+	something.changeValue(number)
+	fmt.Println(something)
 
 }
