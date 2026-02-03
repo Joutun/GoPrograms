@@ -1,4 +1,4 @@
-package startingGoJourney
+package main
 
 import "testing"
 
