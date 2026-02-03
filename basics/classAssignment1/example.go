@@ -6,20 +6,30 @@ import (
 	"os"
 )
 
-func main() {
-	file, err := os.Open("data.csv")
+func printer(bb *Blackboard) {
+	fmt.Println("Tunti | Lämpötila | Kosteus | Ilmanpaine")
+	fmt.Println("---------------------------------------")
+
+	for h := range bb.Count {
+		n := float64(bb.Count[h])
+		fmt.Printf(
+			"%s | %.2f | %.2f | %.2f\n",
+			h,
+			bb.TempSum[h]/n,
+			bb.HumSum[h]/n,
+			bb.PresSum[h]/n,
+		)
+	}
+}
+
+func readCSV(filename string, bb *Blackboard) {
+	file, err := os.Open(filename)
 	if err != nil {
-		fmt.Println("Virhe:", err)
+		fmt.Println("Error opening file:", err)
 		return
 	}
 	defer file.Close()
-
 	reader := bufio.NewReader(file)
-
-	tempSum := make(map[string]float64)
-	humSum := make(map[string]float64)
-	presSum := make(map[string]float64)
-	count := make(map[string]int)
 
 	var c byte
 	// var lineStart = true
@@ -77,10 +87,10 @@ func main() {
 
 			if c == '\n' {
 				if fieldIndex > 3 {
-					tempSum[hourKey] += temp
-					humSum[hourKey] += hum
-					presSum[hourKey] += pres
-					count[hourKey]++
+					bb.TempSum[hourKey] += temp
+					bb.HumSum[hourKey] += hum
+					bb.PresSum[hourKey] += pres
+					bb.Count[hourKey]++
 				}
 				fieldIndex = 0
 				// lineStart = true
@@ -116,19 +126,26 @@ func main() {
 		}
 	}
 
-	fmt.Println("Tunti | Lämpötila | Kosteus | Ilmanpaine")
-	fmt.Println("---------------------------------------")
+}
 
-	for h := range count {
-		n := float64(count[h])
-		fmt.Printf(
-			"%s | %.2f | %.2f | %.2f\n",
-			h,
-			tempSum[h]/n,
-			humSum[h]/n,
-			presSum[h]/n,
-		)
+type Blackboard struct {
+	TempSum map[string]float64
+	HumSum  map[string]float64
+	PresSum map[string]float64
+	Count   map[string]int
+}
+
+func main() {
+
+	bb := &Blackboard{
+		TempSum: make(map[string]float64),
+		HumSum:  make(map[string]float64),
+		PresSum: make(map[string]float64),
+		Count:   make(map[string]int),
 	}
+
+	readCSV("data.csv", bb)
+	printer(bb)
 }
 
 /*
