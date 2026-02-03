@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
 // BASIC COMMANDS:
 // go build first.go
@@ -55,6 +61,7 @@ func main() {
 		// use user input to change value in struct
 		something.changeValue(number)
 		fmt.Println("Number: ", number, " read ", amount, "something: ", something)
+		fmt.Println("==========")
 
 	} else {
 		fmt.Println("Error!: ", err)
@@ -63,4 +70,19 @@ func main() {
 
 	}
 
+	reader := bufio.NewReader(os.Stdin)
+
+	reader.ReadString('\n')
+
+	// amount, err = fmt.Scanf("%d", &number)
+
+	fmt.Println("Give me a second number: ")
+	text, err := reader.ReadString('\n')
+
+	text = strings.TrimSpace(text)
+
+	interestingValue, err := strconv.Atoi(text)
+
+	something.changeValue(interestingValue)
+	fmt.Println("Something: ", something)
 }
